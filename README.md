@@ -1,4 +1,3 @@
-```markdown
 # Real Estate Market Analysis Tool
 
 ## Project Overview
