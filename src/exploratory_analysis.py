@@ -45,18 +45,35 @@ def plot_avg_price_by_beds(df, output_path):
     plt.show()
     plt.close()
 
+# def plot_price_distribution_by_city(df, output_path):
+#     # Price Distribution by City
+#     plt.figure(figsize=(12, 8))
+#     sns.boxplot(x='addressCity', y='price', data=df)
+#     plt.xticks(rotation=90)
+#     plt.title('Price Distribution by City')
+#     plt.xlabel('City')
+#     plt.ylabel('Price')
+#     plt.yscale('log')
+#     plt.savefig(os.path.join(output_path, 'price_distribution_by_city.png'))
+#     plt.show()
+#     plt.close()
+
 def plot_price_distribution_by_city(df, output_path):
-    # Price Distribution by City
-    plt.figure(figsize=(12, 8))
-    sns.boxplot(x='addressCity', y='price', data=df)
+    # Filter top 20 cities by average price
+    top_cities = df.groupby('addressCity')['price'].mean().nlargest(20).index
+    df_top_cities = df[df['addressCity'].isin(top_cities)]
+    
+    plt.figure(figsize=(14, 10))
+    sns.boxplot(x='addressCity', y='price', data=df_top_cities)
+    plt.yscale('log')
     plt.xticks(rotation=90)
-    plt.title('Price Distribution by City')
+    plt.title('Price Distribution by City (Top 20 by Average Price)')
     plt.xlabel('City')
     plt.ylabel('Price')
-    plt.yscale('log')
     plt.savefig(os.path.join(output_path, 'price_distribution_by_city.png'))
     plt.show()
     plt.close()
+    # print(f"Plot saved to {output_path}")
 
 if __name__ == "__main__":
     output_path = 'data/plots'
